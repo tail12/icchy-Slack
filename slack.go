@@ -43,9 +43,18 @@ func (s *slackListener) handleMessageEvent(ev *slack.MessageEvent) error {
 		return nil
 	}
 	a := slack.Attachment{
-		Title: "ご用件は何でしょうか",
-		Color: "good",
+		CallbackID: "",
+		Title:      "ご用件は何でしょうか",
+		Color:      "good",
+		Actions: []slack.AttachmentAction{
+			{
+				Name: "propertyName",
+				Text: "buttonText",
+				Type: "button",
+			},
+		},
 	}
-	_, _, err := s.client.PostMessage(s.channelID, slack.MsgOptionAttachments(a))
-	return err
+
+	_, _, st := s.client.PostMessage(s.channelID, slack.MsgOptionAttachments(a))
+	return st
 }
