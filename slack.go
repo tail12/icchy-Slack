@@ -42,5 +42,10 @@ func (s *slackListener) handleMessageEvent(ev *slack.MessageEvent) error {
 	if !strings.HasPrefix(ev.Msg.Text, fmt.Sprintf("<@%s>", s.botID)) {
 		return nil
 	}
-	return nil
+	a := slack.Attachment{
+		Title: "ご用件は何でしょうか",
+		Color: "good",
+	}
+	_, _, err := s.client.PostMessage(s.channelID, slack.MsgOptionAttachments(a))
+	return err
 }
